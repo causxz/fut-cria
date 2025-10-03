@@ -3,16 +3,13 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import os
 import requests
+# A importação relativa é a chave para a Vercel
 from . import database as db 
 
-# A inicialização da base de dados foi REMOVIDA daqui para ser controlada pelo database.py
+# A inicialização da DB foi REMOVIDA daqui.
 
-# Configuração da aplicação Flask
-project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-template_folder = os.path.join(project_root, 'templates')
-static_folder = os.path.join(project_root, 'static')
-
-app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
+# Configuração simples da aplicação Flask
+app = Flask(__name__, template_folder='../templates', static_folder='../static')
 app.secret_key = 'uma-chave-bem-aleatoria-e-segura'
 
 # --- DECORATOR PARA PROTEGER ROTAS ---
@@ -61,6 +58,7 @@ def pagina_calendario():
 
 
 # --- ROTAS DA API (back-end) ---
+# (O resto do código da API continua exatamente igual)
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
