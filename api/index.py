@@ -5,18 +5,15 @@ import os
 import requests
 from . import database as db 
 
-# A linha "db.init_db()" foi REMOVIDA do topo do ficheiro.
+# A inicialização da base de dados foi REMOVIDA daqui para ser controlada pelo database.py
 
 # Configuração da aplicação Flask
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
-app.secret_key = 'uma-chave-bem-aleatoria-e-segura'
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+template_folder = os.path.join(project_root, 'templates')
+static_folder = os.path.join(project_root, 'static')
 
-# --- GATILHO DE INICIALIZAÇÃO DA BASE DE DADOS (A SOLUÇÃO DEFINITIVA) ---
-@app.before_request
-def initialize_database():
-    # A função 'init_db' só vai criar a base de dados na primeira vez que for chamada.
-    # Este gatilho garante que isso aconteça antes do primeiro pedido real.
-    db.init_db()
+app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
+app.secret_key = 'uma-chave-bem-aleatoria-e-segura'
 
 # --- DECORATOR PARA PROTEGER ROTAS ---
 def login_required(f):
