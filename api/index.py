@@ -9,7 +9,7 @@ from . import database as db
 # A inicialização da DB foi REMOVIDA daqui. A responsabilidade é 100% do database.py
 
 # Configuração simples da aplicação Flask, que funciona com o vercel.json
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+app = Flask(__name__, template_folder=TEMPLATES_DIR, static_folder=STATIC_DIR)
 app.secret_key = 'uma-chave-bem-aleatoria-e-segura'
 
 # --- DECORATOR PARA PROTEGER ROTAS ---
