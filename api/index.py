@@ -3,7 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import os
 import requests
-import database as db 
+from . import database as db
 
 # A linha "db.init_db()" foi REMOVIDA daqui, pois a lógica agora está no database.py
 
