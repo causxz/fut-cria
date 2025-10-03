@@ -6,9 +6,9 @@ import requests
 # A importação relativa é a chave para a Vercel
 from . import database as db 
 
-# A inicialização da DB foi REMOVIDA daqui.
+# A inicialização da DB foi REMOVIDA daqui. A responsabilidade é 100% do database.py
 
-# Configuração simples da aplicação Flask
+# Configuração simples da aplicação Flask, que funciona com o vercel.json
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
 app.secret_key = 'uma-chave-bem-aleatoria-e-segura'
 
@@ -16,6 +16,8 @@ app.secret_key = 'uma-chave-bem-aleatoria-e-segura'
 def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
+        # A primeira coisa que qualquer rota faz é tentar conectar à DB,
+        # o que força a sua inicialização segura através do get_db() no database.py.
         if 'user_id' not in session:
             if request.path.startswith('/api/'):
                 return jsonify({"status": "erro", "message": "Acesso não autorizado."}), 401
@@ -58,7 +60,6 @@ def pagina_calendario():
 
 
 # --- ROTAS DA API (back-end) ---
-# (O resto do código da API continua exatamente igual)
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
@@ -208,5 +209,6 @@ def api_clima():
         return jsonify({"erro": f"Ocorreu um erro inesperado: {e}"}), 500
 
 if __name__ == '__main__':
+    # Esta parte só é usada para testes locais, a Vercel não a executa.
     app.run(debug=True, port=5000)
 

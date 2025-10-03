@@ -7,8 +7,7 @@ DATABASE_PATH = '/tmp/futsal.db'
 
 def get_db():
     """
-    Conecta ao banco de dados.
-    CHAMA A INICIALIZAÇÃO SE FOR A PRIMEIRA VEZ.
+    Conecta ao banco de dados e chama a inicialização se for a primeira vez.
     """
     # Antes de conectar, garante que a base de dados e as tabelas existem.
     init_db()
@@ -19,7 +18,6 @@ def get_db():
 
 def init_db():
     """Cria as tabelas e os usuários iniciais se a base de dados não existir."""
-    # A lógica aqui dentro é a mesma, mas agora só é chamada pela get_db()
     if os.path.exists(DATABASE_PATH):
         return
 
