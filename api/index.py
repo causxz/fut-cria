@@ -3,10 +3,11 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import os
 import requests
-
-# --- CORREÇÃO CRUCIAL ---
-# O nome do ficheiro é 'database.py', então a importação deve ser 'database'
 import database as db 
+
+# --- NOVA LINHA DE INICIALIZAÇÃO ---
+# Garante que a base de dados seja criada quando a aplicação arranca na Vercel
+db.init_db()
 
 # Configuração da aplicação Flask
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
@@ -82,7 +83,6 @@ def api_logout():
     session.clear()
     return jsonify({"status": "sucesso", "message": "Logout realizado com sucesso."})
 
-# ... (O resto das suas rotas de API continuam aqui, sem alterações)
 @app.route('/api/jogadores', methods=['GET', 'POST'])
 @login_required
 def api_gerenciar_jogadores():
