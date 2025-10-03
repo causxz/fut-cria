@@ -2,6 +2,7 @@ import sqlite3
 import os
 from werkzeug.security import generate_password_hash
 
+# A base de dados será criada na pasta /tmp, que é o único local com permissão de escrita na Vercel.
 DATABASE_PATH = '/tmp/futsal.db'
 
 def get_db():
