@@ -1,13 +1,15 @@
 from flask import Flask, jsonify, request, session, render_template, redirect, url_for
 from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
-import database as db
+import os
 import requests
+
+# --- CORREÇÃO CRUCIAL ---
+# O nome do ficheiro é 'database.py', então a importação deve ser 'database'
+import database as db 
 
 # Configuração da aplicação Flask
 app = Flask(__name__, template_folder='../templates', static_folder='../static')
-
-# --- CONFIGURAÇÃO ESSENCIAL ---
 app.secret_key = 'uma-chave-bem-aleatoria-e-segura'
 
 # --- DECORATOR PARA PROTEGER ROTAS ---
@@ -22,7 +24,7 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
-# --- ROTAS PARA SERVIR PÁGINAS HTML ---
+# --- ROTAS DE PÁGINAS HTML ---
 @app.route('/')
 @login_required
 def pagina_principal():
@@ -57,7 +59,6 @@ def pagina_calendario():
 
 # --- ROTAS DA API (back-end) ---
 
-# --- API DE AUTENTICAÇÃO ---
 @app.route('/api/login', methods=['POST'])
 def api_login():
     dados = request.get_json()
@@ -74,14 +75,14 @@ def api_login():
         return jsonify({"status": "sucesso", "message": "Login realizado com sucesso!"})
     else:
         return jsonify({"status": "erro", "message": "Credenciais inválidas."}), 401
-
+        
 @app.route('/api/logout', methods=['POST'])
 @login_required
 def api_logout():
     session.clear()
     return jsonify({"status": "sucesso", "message": "Logout realizado com sucesso."})
 
-# --- API DE JOGADORES ---
+# ... (O resto das suas rotas de API continuam aqui, sem alterações)
 @app.route('/api/jogadores', methods=['GET', 'POST'])
 @login_required
 def api_gerenciar_jogadores():
@@ -89,15 +90,12 @@ def api_gerenciar_jogadores():
     try:
         if request.method == 'GET':
             jogadores_rows = conn.execute("SELECT id, nome, posicao FROM jogadores ORDER BY nome ASC").fetchall()
-            jogadores_lista = [dict(row) for row in jogadores_rows]
-            return jsonify(jogadores_lista)
-
+            return jsonify([dict(row) for row in jogadores_rows])
         elif request.method == 'POST':
             dados = request.get_json()
             nome = dados.get('nome')
             if not nome or not nome.strip():
                 return jsonify({"status": "erro", "message": "O nome é obrigatório."}), 400
-            
             posicao = dados.get('posicao')
             cursor = conn.cursor()
             cursor.execute("INSERT INTO jogadores (nome, posicao) VALUES (?, ?)", (nome, posicao))
@@ -116,12 +114,10 @@ def api_gerenciar_jogador_especifico(id):
             nome = dados.get('nome')
             if not nome or not nome.strip():
                 return jsonify({"status": "erro", "message": "O nome é obrigatório."}), 400
-            
             posicao = dados.get('posicao')
             conn.execute("UPDATE jogadores SET nome = ?, posicao = ? WHERE id = ?", (nome, posicao, id))
             conn.commit()
             return jsonify({"status": "sucesso", "message": "Jogador atualizado!"})
-
         elif request.method == 'DELETE':
             cursor = conn.cursor()
             cursor.execute("DELETE FROM jogadores WHERE id = ?", (id,))
@@ -132,7 +128,6 @@ def api_gerenciar_jogador_especifico(id):
     finally:
         if conn: conn.close()
 
-# --- API DE EVENTOS ---
 @app.route('/api/eventos', methods=['GET', 'POST'])
 @login_required
 def api_gerenciar_eventos():
@@ -140,14 +135,11 @@ def api_gerenciar_eventos():
     try:
         if request.method == 'GET':
             eventos_rows = conn.execute("SELECT id, data, horario, descricao FROM eventos ORDER BY data, horario").fetchall()
-            eventos_lista = [dict(row) for row in eventos_rows]
-            return jsonify(eventos_lista)
-
+            return jsonify([dict(row) for row in eventos_rows])
         elif request.method == 'POST':
             dados = request.get_json()
             if not all(k in dados and dados[k] for k in ['data', 'horario', 'descricao']):
                 return jsonify({"status": "erro", "message": "Todos os campos são obrigatórios."}), 400
-            
             cursor = conn.cursor()
             cursor.execute("INSERT INTO eventos (data, horario, descricao) VALUES (?, ?, ?)",
                            (dados['data'], dados['horario'], dados['descricao']))
@@ -170,23 +162,21 @@ def api_deletar_evento(id):
     finally:
         if conn: conn.close()
 
-# --- API DE CLIMA ---
-@app.route('/api/clima', methods=['POST']) # Alterado para POST
+@app.route('/api/clima', methods=['POST'])
 @login_required
 def api_clima():
     dados = request.get_json()
     cidade = dados.get('cidade')
     if not cidade:
         return jsonify({"erro": "Cidade não fornecida"}), 400
-
-    API_KEY = "00a3ab956f03bcc78c7fd0a613e6949e"
+    
+    API_KEY = os.getenv('API_KEY')
+    if not API_KEY:
+        return jsonify({"erro": "Chave da API de clima não configurada no servidor."}), 500
+    
     URL_BASE = "http://api.openweathermap.org/data/2.5/forecast"
-    params = {
-        'q': cidade,
-        'appid': API_KEY,
-        'units': 'metric',
-        'lang': 'pt_br'
-    }
+    params = {'q': cidade, 'appid': API_KEY, 'units': 'metric', 'lang': 'pt_br'}
+    
     try:
         response = requests.get(URL_BASE, params=params)
         response.raise_for_status()
@@ -195,7 +185,6 @@ def api_clima():
         previsao_diaria = {}
         for previsao in data.get('list', []):
             data_texto = previsao['dt_txt'].split(' ')[0]
-            # Usamos a primeira previsão que encontramos para cada dia
             if data_texto not in previsao_diaria:
                 previsao_diaria[data_texto] = {
                     "data": data_texto,
@@ -221,10 +210,3 @@ def api_clima():
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
 
-# --- PARA RODAR A APLICAÇÃO ---
-# 1. Certifique-se de ter o Flask e requests instalados:
-#    pip install Flask requests
-# 2. Execute este arquivo:
-#    python api/index.py
-# 3. Acesse a aplicação em http://
-#    localhost:5000
