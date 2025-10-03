@@ -6,6 +6,11 @@ import requests
 # A importação relativa é a chave para a Vercel
 from . import database as db 
 
+# Definição dos diretórios corretos para Flask
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+TEMPLATES_DIR = os.path.join(BASE_DIR, 'templates')
+STATIC_DIR = os.path.join(BASE_DIR, 'static')
+
 # A inicialização da DB foi REMOVIDA daqui. A responsabilidade é 100% do database.py
 
 # Configuração simples da aplicação Flask, que funciona com o vercel.json
