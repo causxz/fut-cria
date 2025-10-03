@@ -3,12 +3,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from functools import wraps
 import os
 import requests
-from . import database as db
+from . import database as db 
 
-# A linha "db.init_db()" foi REMOVIDA daqui, pois a lógica agora está no database.py
+# Garante que a base de dados seja criada quando a aplicação arranca na Vercel
+db.init_db()
 
-# Configuração da aplicação Flask
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+# --- CORREÇÃO FINAL PARA FICHEIROS ESTÁTICOS ---
+# Define os caminhos absolutos para as pastas, que funcionam tanto localmente como na Vercel
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+template_folder = os.path.join(project_root, 'templates')
+static_folder = os.path.join(project_root, 'static')
+
+app = Flask(__name__, template_folder=template_folder, static_folder=static_folder)
 app.secret_key = 'uma-chave-bem-aleatoria-e-segura'
 
 # --- DECORATOR PARA PROTEGER ROTAS ---
@@ -57,6 +63,7 @@ def pagina_calendario():
 
 
 # --- ROTAS DA API (back-end) ---
+# (O resto do código da API continua exatamente igual)
 
 @app.route('/api/login', methods=['POST'])
 def api_login():
@@ -208,4 +215,3 @@ def api_clima():
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
 
-###
