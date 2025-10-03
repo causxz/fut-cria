@@ -5,9 +5,7 @@ import os
 import requests
 import database as db 
 
-# --- NOVA LINHA DE INICIALIZAÇÃO ---
-# Garante que a base de dados seja criada quando a aplicação arranca na Vercel
-db.init_db()
+# A linha "db.init_db()" foi REMOVIDA daqui, pois a lógica agora está no database.py
 
 # Configuração da aplicação Flask
 app = Flask(__name__, template_folder='../templates', static_folder='../static')

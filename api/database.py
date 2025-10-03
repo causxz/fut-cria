@@ -2,23 +2,31 @@ import sqlite3
 import os
 from werkzeug.security import generate_password_hash
 
-# A base de dados será criada na pasta /tmp, que é o único local com permissão de escrita na Vercel.
+# O caminho da base de dados continua a ser a pasta /tmp
 DATABASE_PATH = '/tmp/futsal.db'
 
 def get_db():
-    """Conecta ao banco de dados e retorna o objeto de conexão."""
+    """
+    Conecta ao banco de dados.
+    CHAMA A INICIALIZAÇÃO SE FOR A PRIMEIRA VEZ.
+    """
+    # Antes de conectar, garante que a base de dados e as tabelas existem.
+    init_db()
+    
     conn = sqlite3.connect(DATABASE_PATH)
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_db():
     """Cria as tabelas e os usuários iniciais se a base de dados não existir."""
+    # A lógica aqui dentro é a mesma, mas agora só é chamada pela get_db()
     if os.path.exists(DATABASE_PATH):
-        return # A base de dados já existe, não faz nada.
+        return
 
     print("Inicializando nova base de dados em /tmp/futsal.db...")
     try:
-        conn = get_db()
+        # Usamos uma conexão temporária para criar tudo
+        conn = sqlite3.connect(DATABASE_PATH)
         cursor = conn.cursor()
         
         # Criação das tabelas
