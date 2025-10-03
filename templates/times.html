@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Montagem de Times - FutCria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- 1. Usar <main> para o conteúdo principal -->
+    <main class="container">
+        <!-- 2. <header> como marco de navegação -->
+        <header class="page-header">
+            <h1>Montagem de Times</h1>
+            <div>
+                <a href="{{ url_for('pagina_jogadores') }}" class="button-secondary" aria-label="Retornar para a página de gestão de jogadores">Gerir Jogadores</a>
+                <a href="/menu" class="button-secondary">Voltar ao Menu</a>
+                <button id="logoutButton" class="button-danger">Sair</button>
+            </div>
+        </header>
+
+        <!-- 3. <section> para a seleção de jogadores -->
+        <section class="card" aria-labelledby="selection-title">
+            <h2 id="selection-title">Jogadores Disponíveis (Selecione 10)</h2>
+            <!-- 4. Adicionar 'role' e 'aria-label' para descrever a lista -->
+            <div id="listaJogadoresParaSorteio" class="player-selection-list" role="group" aria-label="Lista de jogadores para selecionar">
+                <!-- A lista de jogadores será carregada aqui -->
+            </div>
+            <div class="form-actions">
+                <button id="sortearTimesBtn" class="button-primary" aria-label="Sortear os 10 jogadores selecionados em dois times">Sortear Times</button>
+            </div>
+            <!-- 5. 'aria-live' para anunciar erros -->
+            <p id="sorteioErrorMessage" class="error-message" aria-live="polite"></p>
+        </section>
+
+        <!-- 6. <section> para o resultado do sorteio, com 'aria-live' para anunciar a aparição -->
+        <section id="resultadoSorteio" class="teams-grid" style="display: none;" aria-live="polite" aria-atomic="true">
+            <div class="team-card card">
+                <!-- O h3 será o cabeçalho para a seção do time -->
+                <h3 id="team-a-name">City</h3>
+                <div class="team-body">
+                    <img id="escudoTimeA" src="" alt="Escudo do time A" class="team-shield">
+                    <!-- 7. 'aria-labelledby' para associar a lista ao nome do time -->
+                    <ul id="listaTimeA" aria-labelledby="team-a-name"></ul>
+                </div>
+            </div>
+            <div class="team-card card">
+                <h3 id="team-b-name">United</h3>
+                <div class="team-body">
+                    <img id="escudoTimeB" src="" alt="Escudo do time B" class="team-shield">
+                    <ul id="listaTimeB" aria-labelledby="team-b-name"></ul>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+

@@ -1,0 +1,10 @@
+# Ambiente Virtual do Python
+venv/
+.venv/
+
+# Ficheiros de cache do Python
+__pycache__/
+*.pyc
+
+# Ficheiro da base de dados local
+futsal.db

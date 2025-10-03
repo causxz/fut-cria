@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Principal - FutCria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="container">
+        <header class="page-header">
+            <h1>Menu Principal</h1>
+            <button id="logoutButton" class="button-danger" aria-label="Sair do sistema">Sair</button>
+        </header>
+
+        <!-- WIDGET DE PREVISÃO DO TEMPO ATUALIZADO -->
+        <section id="weather-widget" class="card" aria-labelledby="weather-title">
+            <div class="weather-header">
+                <h2 id="weather-title">Previsão do Tempo</h2>
+                <!-- NOVO: Botão para trocar a cidade -->
+                <button id="change-city-btn" class="button-secondary" style="display: none;">Trocar Cidade</button>
+            </div>
+            
+            <!-- Formulário para definir a localização (inicialmente visível ou não) -->
+            <form id="locationForm" class="weather-location-form" style="display: none;">
+                <label for="cidadeInput">Defina sua cidade e país (Ex: Salvador, BR):</label>
+                <div class="form-group-inline">
+                    <input type="text" id="cidadeInput" placeholder="Cidade, Sigla do País" required>
+                    <button type="submit" class="button-primary">Salvar</button>
+                </div>
+            </form>
+
+            <!-- Grid da previsão -->
+            <div id="weather-forecast" class="weather-grid">
+                <!-- A previsão será inserida aqui -->
+            </div>
+            <p id="weather-error" class="error-message"></p>
+        </section>
+
+        <!-- Menu de navegação -->
+        <nav>
+            <section class="menu-grid" aria-label="Menu de navegação">
+                <a href="{{ url_for('pagina_jogadores') }}" class="menu-card card">
+                    <h2>Gerir Jogadores</h2>
+                    <p>Adicione, edite e remova os atletas do seu time.</p>
+                </a>
+                <a href="{{ url_for('pagina_times') }}" class="menu-card card">
+                    <h2>Montar Times</h2>
+                    <p>Selecione os jogadores presentes e sorteie as equipes.</p>
+                </a>
+                <a href="{{ url_for('pagina_calendario') }}" class="menu-card card">
+                    <h2>Calendário</h2>
+                    <p>Marque os próximos jogos, treinos e compromissos.</p>
+                </a>
+            </section>
+        </nav>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+

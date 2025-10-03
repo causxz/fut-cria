@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Jogadores - FutCria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- 1. Usar <main> para o conteúdo principal -->
+    <main class="container">
+        <!-- 2. Usar <header> para o cabeçalho da página, um marco de navegação -->
+        <header class="page-header">
+            <h1>Gestão de Jogadores</h1>
+            <div>
+                <a href="/menu" class="button-secondary">Voltar ao Menu</a>
+                <button id="logoutButton" class="button-danger">Sair</button>
+            </div>
+        </header>
+
+        <!-- 3. Usar <section> para agrupar o formulário, criando outro marco -->
+        <section class="form-container card" aria-labelledby="form-title">
+            <h2 id="form-title">Adicionar Novo Jogador</h2>
+            <form id="jogadorForm">
+                <input type="hidden" id="jogadorId" name="id">
+                <div class="form-group">
+                    <label for="nome">Nome do Jogador</label>
+                    <input type="text" id="nome" name="nome" required 
+                           placeholder="Ex: Lionel Messi"
+                           aria-label="Digite o nome do jogador">
+                </div>
+                <div class="form-group">
+                    <label for="posicao">Posição</label>
+                    <input type="text" id="posicao" name="posicao"
+                           placeholder="Ex: Atacante"
+                           aria-label="Digite a posição do jogador">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="button-primary" aria-label="Salvar jogador novo ou editado">Salvar Jogador</button>
+                    <button type="button" id="cancelarEdicao" class="button-secondary" style="display: none;" aria-label="Cancelar a edição do jogador e limpar o formulário">Cancelar Edição</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- 4. Usar <section> para a tabela, o último marco da página -->
+        <section class="table-container card" aria-labelledby="table-title">
+            <h2 id="table-title">Jogadores Cadastrados</h2>
+            <table id="jogadoresTable">
+                <!-- 5. Adicionar <caption> para descrever a tabela para leitores de tela -->
+                <caption>Lista de jogadores cadastrados no sistema com opções para editar ou excluir cada um.</caption>
+                <thead>
+                    <tr>
+                        <!-- 6. Adicionar scope="col" para associar o cabeçalho à coluna -->
+                        <th scope="col">Nome</th>
+                        <th scope="col">Posição</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="jogadoresTbody">
+                    <!-- O conteúdo será preenchido pelo JavaScript -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
+

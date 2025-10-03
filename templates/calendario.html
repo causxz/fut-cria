@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendário - FutCria</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="container">
+        <header class="page-header">
+            <h1>Calendário de Compromissos</h1>
+            <div>
+                <a href="/menu" class="button-secondary">Voltar ao Menu</a>
+                <button id="logoutButton" class="button-danger">Sair</button>
+        </header>
+
+        <!-- Formulário para adicionar novos eventos -->
+        <section class="card" aria-labelledby="form-title">
+            <h2 id="form-title">Marcar Novo Compromisso</h2>
+            <form id="eventoForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="data">Data</label>
+                        <input type="date" id="data" name="data" required aria-label="Selecione a data do compromisso">
+                    </div>
+                    <div class="form-group">
+                        <label for="horario">Horário</label>
+                        <input type="time" id="horario" name="horario" required aria-label="Selecione o horário do compromisso">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="descricao">Descrição (Ex: Jogo, Treino, Jogo Treino)</label>
+                    <input type="text" id="descricao" name="descricao" required placeholder="Ex: Jogo contra o time adversário" aria-label="Digite a descrição do compromisso, como jogo ou treino">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="button-primary">Adicionar Evento</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Lista de eventos futuros -->
+        <section class="card" aria-labelledby="events-title">
+            <h2 id="events-title">Próximos Compromissos</h2>
+            <ul id="listaEventos" class="event-list">
+                <!-- Os eventos serão carregados aqui pelo JavaScript -->
+            </ul>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

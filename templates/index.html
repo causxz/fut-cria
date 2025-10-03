@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FutCria - Login</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body>
+    <!-- 1. Usar a tag <main> para indicar o conteúdo principal da página -->
+    <main class="container login-container">
+        <h1>FutCria Login</h1>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="username">Usuário</label>
+                <!-- 2. Adicionar 'aria-label' e 'placeholder' para clareza -->
+                <input type="text" id="username" name="username" required 
+                       aria-label="Digite seu nome de usuário" 
+                       placeholder="seu.usuario">
+            </div>
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <!-- 2. Adicionar 'aria-label' e 'placeholder' para clareza -->
+                <input type="password" id="password" name="password" required 
+                       aria-label="Digite sua senha" 
+                       placeholder="sua.senha">
+            </div>
+            
+            <!-- 3. Agrupar elementos relacionados -->
+            <div class="form-actions">
+                <button type="submit" class="btn" aria-label="Entrar no sistema">Entrar</button>
+            </div>
+        </form>
+        <!-- 4. 'aria-live' para que o leitor de tela anuncie o erro -->
+        <p id="errorMessage" class="error-message" aria-live="polite"></p>
+    </main>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+
+</html>
+
