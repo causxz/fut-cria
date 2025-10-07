@@ -268,8 +268,8 @@ document.addEventListener('DOMContentLoaded', () => {
             listaTimeA.innerHTML = timeA.map(nome => `<li>${nome}</li>`).join('');
             listaTimeB.innerHTML = timeB.map(nome => `<li>${nome}</li>`).join('');
             
-            escudoTimeA.src = '/static/images/gozadorme.jpg';
-            escudoTimeB.src = '/static/images/nopelo.jpg';
+            escudoTimeA.src = '/static/images/city.png';
+            escudoTimeB.src = '/static/images/united.png';
             
             resultadoDiv.style.display = 'grid';
         });
